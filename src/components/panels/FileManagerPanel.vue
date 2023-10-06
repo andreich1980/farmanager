@@ -55,12 +55,17 @@ const currentLevelStructure = computed(() => {
       };
     })
     .sort((a, b) => {
+      if (a.type === ITEM_TYPES.UP) {
+        return -1;
+      }
+      if (b.type === ITEM_TYPES.UP) {
+        return 1;
+      }
+
       if (a.type !== b.type) {
-        if (a.type === ITEM_TYPES.UP) {
-          return -1;
-        }
         return a.type === ITEM_TYPES.FOLDER ? -1 : 1;
       }
+
       return a.path < b.path ? -1 : 1;
     });
 });
@@ -160,25 +165,26 @@ const prepareFileSize = (size) => {
       </template>
       <template #td-size="{ row, value: size }">
         <div
-          v-if="row.type === ITEM_TYPES.FOLDER"
-          class="text-center"
+          v-if="row.type === ITEM_TYPES.FILE"
+          class="text-right"
           :class="getTableCellClasses(row)"
         >
-          &lt;Folder&gt;
-        </div>
-        <div v-else class="text-right" :class="getTableCellClasses(row)">
           {{ size.value }} {{ size.unit }}
+        </div>
+        <div
+          v-else
+          class="flex justify-between before:content-['<'] after:content-['>']"
+          :class="getTableCellClasses(row)"
+        >
+          <template v-if="row.type === ITEM_TYPES.UP">Up</template>
+          <template v-if="row.type === ITEM_TYPES.FOLDER">Folder</template>
         </div>
       </template>
       <template #td-date="{ row, value: date }">
-        <div :class="getTableCellClasses(row)">
-          {{ date }}
-        </div>
+        <div :class="getTableCellClasses(row)" v-html="date || '&nbsp;'"></div>
       </template>
       <template #td-time="{ row, value: time }">
-        <div :class="getTableCellClasses(row)">
-          {{ time }}
-        </div>
+        <div :class="getTableCellClasses(row)" v-html="time || '&nbsp;'"></div>
       </template>
     </DataTable>
   </Card>
