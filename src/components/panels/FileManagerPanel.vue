@@ -93,7 +93,7 @@ const columns = [
     title: "Name",
     name: "path",
     data: "path",
-    classHeader: "w-6/12",
+    classHeader: "w-full",
   },
   {
     title: "Size",
