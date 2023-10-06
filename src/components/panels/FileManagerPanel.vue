@@ -149,7 +149,7 @@ const prepareFileSize = (size) => {
     <DataTable
       :columns="columns"
       :data="currentLevelStructure"
-      class="table-fixed"
+      class="table-fixed select-none"
       :row-classes="getClassesForRow"
       @active-row="setActiveRow"
     >
